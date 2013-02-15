@@ -1,0 +1,136 @@
+html, body{
+  width: 100%;
+}
+html{
+   overflow-y:scroll;
+   overflow-x:auto;
+}
+body{
+  background: url(/diapos/img/px_by_Gre3g.png) repeat;
+}
+header{
+  padding-top: 1em;
+}
+a, a:focus{
+   outline: 0;
+}
+h1{
+
+}
+h2{
+  font-family: 'Merienda', cursive;
+  font-weight: 400;
+  font-size: 20px;
+}
+h3 a {
+vertical-align: text-top;
+}
+/* Custom container */
+.main{
+  height: 100%;
+}
+
+.navbar.affix{
+  width: 14.2%;
+}
+
+.nav-tabs li{
+  width:100%;
+}
+.nav-tabs li img{
+  width: 80px;
+  margin-right: 20px;
+  transition-property: width height margin-right;
+  transition-duration: 300ms;
+  transition-timing-function: linear;
+}
+.navbar .nav > li > a{
+  padding: 5px 15px 5px;
+}
+.nav-tabs .active img{
+  margin-right: 0;
+  width: 100px;
+}
+.affix {
+    top: 20px;
+}
+.nav .icon-chevron-right {
+  float: right;
+  margin-top: 2px;
+  margin-right: -6px;
+}
+.nav > li > a:hover {
+  background-color: #f5f5f5;
+}
+.nav a:hover .icon-chevron-right {
+  opacity: .5;
+}
+.nav .active .icon-chevron-right,
+.nav .active a:hover .icon-chevron-right {
+  background-image: url(../img/glyphicons-halflings-white.png);
+  opacity: 1;
+}
+
+p.ellipsis {
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.diapo{
+  padding:22px;
+  border-radius: 10px;
+  background:  url("/diapos/img/kodachrome-s.jpg") no-repeat scroll center 2px,
+               url("/diapos/img/logo-kodak.jpg") no-repeat scroll center 95px;
+  background-color: #F6F5F0;
+  max-height: 70px;
+  max-width: 70px;
+  width:70px;
+}
+
+.diapo > div{
+  background: black;
+  border-radius: 3px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.diapo img{
+/*   display: inline-table; */
+  max-width: none;
+}
+.modal{
+  width: 700px;
+  height: 700px;
+  margin: -350px 0 0 -350px;
+}
+.modal-body{
+  text-align: center;
+  max-height: 700px;
+}
+.modal-body a, .modal-body img{
+  display:inline-block;
+  position: static;;
+}
+
+/* .modal-body{
+  max-height: none;
+} */
+/* .carousel .item > img{
+  display: inline;
+}
+
+.carousel .item{
+  text-align: center;
+} */
+
+/* .modal-body img{
+  margin: 0 80px;
+}
+
+.modal{
+  width:auto;
+} */

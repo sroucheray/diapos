@@ -1,0 +1,15 @@
+<div>
+    <div class="well"><h3 id="{{encode year}}}">{{year}}}</h3></div>
+    <ul class="thumbnails">
+        {{#each albums}}
+            <li class="span2">
+                <div  class="thumbnail">
+                    <a href="#" class="coverlink" data-href="{{id}}" title="Voir cet album">
+                    <img class="img-rounded" src="{{thumb}}">
+                    </a>
+                    <p class="ellipsis" title="{{displayTitle}}">({{entry.length}}) {{displayTitle}}</p>
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+</div>
