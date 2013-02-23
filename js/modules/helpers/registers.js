@@ -49,6 +49,11 @@ define(['handlebars'], function(Handlebars){
         return (text+'').toLowerCase().replace(/ /g, '-');
     });
 
+    Handlebars.registerHelper('ripExtension', function(text) {
+        return text.replace('.jpg', '');
+    });
+
+
     Handlebars.registerHelper('longDate', function(date) {
         if(date){
             date = new Date(date);

@@ -7,8 +7,8 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <!-- Le styles -->
-        <link href="/diapos/css/bootstrap.css" rel="stylesheet">
-        <link href="/diapos/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="/diapos/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/diapos/css/bootstrap-responsive.min.css" rel="stylesheet">
         <link href="/diapos/css/darkstrap-v0.9.0.css" rel="stylesheet">
         <link href='http://fonts.googleapis.com/css?family=Merienda&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
@@ -17,15 +17,129 @@
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
             </script>
+            <style type="text/css">
+.thumbnails li{
+    margin-bottom:35px;
+}
+            </style>
         <![endif]-->
+        <script>
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-9114824-1']);
+      _gaq.push(['_trackPageview']);
+        </script>
         <script src="/diapos/js/libs/requirejs/require-jquery.min.js"
                 data-main="/diapos/js/modules/bootscope/bootscope"
                 data-baseurl="/diapos/js/modules"
                 data-bootscope="bootconfig"
-                data-preload="app">
+                data-postload="app">
         </script>
+
+        <script id="pagination" type="text/handlebars-template">
+<div class="span2 sidebar">
+    <div class="navbar" data-spy="affix" data-offset-top="10">
+      <ul class="nav nav-tabs nav-stacked well">
+        {{#each year}}
+        <li><a href="#{{encode this}}}"><small>{{this}}}</small><i class="icon-chevron-right"></i></a></li>
+        {{/each}}
+      </ul>
+    </div>
+</div>
+        </script>
+
+        <script id="covers" type="text/handlebars-template">
+<div>
+    <div class="well"><h3 id="{{encode year}}}" class="anchor">{{year}}}</h3></div>
+    <ul class="thumbnails">
+        {{#each albums}}
+            <li>
+                <div style="width:160px;">
+                    <a href="#" class="coverlink" data-href="{{id}}" title="Voir '{{displayTitle}}'"><img class="img-rounded" src="{{thumb}}" width="160" height="160" style="width:160px; height:160px"></a><p class="ellipsis" title="{{displayTitle}}"><span title="{{entry.length}} diapos" class="badge">{{entry.length}}</span> {{displayTitle}}</p>
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+</div>
+        </script>
+
+
+        <script id="album-diapos" type="text/handlebars-template">
+<div class="well bar">
+    <span>Mode d'affichage : </span>
+    <div class="btn-toolbar">
+      <div class="btn-group">
+        <a class="btn btn-inverse active" href="album/{{id}}" title="Affichage actuel en mode diapositives"><i class="icon-th-large icon-white"></i></a>
+        <a class="btn btn-inverse" href="album/{{id}}/liste" title="Affichage en liste"><i class="icon-align-justify icon-white"></i></a>
+      </div>
+    </div>
+</div>
+<ul class="thumbnails">
+{{#each entry}}
+    <li class="thumb-1">
+        <div class="diapo" data-title="{{title}}">
+            <div style="width:{{thumbs.1.height}}px; height:{{thumbs.1.width}}px">
+                <a href="{{src}}" title="Agrandir">
+                    <img src="{{thumbs.1.url}}" width="{{thumbs.1.width}}" height="{{thumbs.1.height}}" style="width:{{thumbs.1.width}}px; height:{{thumbs.1.height}}px" />
+                </a>
+            </div>
+       </div>
+        <div>{{title}}</div>
+    </li>
+{{/each}}
+</ul>
+<div id="myModal" class="modal hide" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><small>Fermer</small> ×</button>
+<span></span>
+</div>
+<div class="modal-body"></div>
+</div>
+        </script>
+
+
+
+        <script id="album-liste" type="text/handlebars-template">
+<div class="well bar">
+    <span>Mode d'affichage : </span>
+    <div class="btn-toolbar">
+      <div class="btn-group">
+        <a class="btn btn-inverse" href="album/{{id}}" title="Affichage en mode diapositives"><i class="icon-th-large icon-white"></i></a>
+        <a class="btn btn-inverse active" href="album/{{id}}/liste" title="Affichage actuel en liste"><i class="icon-align-justify icon-white"></i></a>
+      </div>
+    </div>
+</div>
+
+<ul class="thumbnails list">
+{{#each entry}}
+    <li class="row-fluid anchor" id="album/{{../id}}/liste/{{title}}">
+        <div class="span6 thumbnail" id="image{{ripExtension title}}">
+            <a href="{{link}}" target="_blank" title="Afficher en grande résolution sur Google Picasa / Google Plus">
+                <img src="{{src}}" />
+            </a>
+            <a class="show-in-google" href={{link}} target="_blank" data-toggle="tooltip" data-placement="bottom" title="Afficher en grande résolution sur Google Picasa / Google Plus"><span class="btn btn-link">{{title}}</span><i class="icon-share icon-white"></i></a>
+        </div>
+    </li>
+    <li class="row-fluid up"><div class="span6"><div class="pull-right"><a href="#">Haut <i class="icon-arrow-up icon-white"></i></a></div></div></li>
+{{/each}}
+</ul>
+        </script>
+
+
+
+
+        <script id="carousel" type="text/handlebars-template">
+<a class="carousel-control left" data-slide="prev">&lsaquo;</a>
+<a href="{{diap.link}}"  target="_blank" title="Afficher en grande résolution sur Google Picasa / Google Plus">
+<img src="{{diap.src}}" width="{{width}}" height="{{height}}" style="width:{{width}}px; height:{{height}}px" />
+</a>
+<a class="carousel-control right" data-slide="next">&rsaquo;</a>
+        </script>
+
+
+
+
     </head>
-    <body>
+    <body id="home">
         <div class="container-fluid">
             <div class="row">
                 <header class="span12">
@@ -35,13 +149,21 @@
             </div>
             <div class="row-fluid">
                 <ul class="breadcrumb">
-                  <li><a href="/diapos/">Albums</a> <span class="divider">/</span></li>
-                  <li><a href="#" class="active">Library</a></li>
+                  <li><a href="#">Liste des albums</a></li>
                 </ul>
             </div>
             <div class="row-fluid main">
             </div>
         </div>
+
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
     </body>
 </html>
 

@@ -29,8 +29,8 @@ var fs = require('fs'),
         "1967-P- NOVEMBRE 1967 - FIANCAILLES FRANCOISE & DANIEL":"Fiançailles Françoise & Daniel",
         "1968-03 - FIANCAILLES JEAN-MICHEL & MARIE-CLAUDE":"Fiançailles Marie-Claude et Jean-Michel",
         "1968-07 - MARIAGE JEAN-MICHEL & MARIE-CLAUDE":"Mariage Marie-Claude & Jean-Michel",
-        "1968-07 - MARIAGE JEAN-MICHEL & MARIE-CLAUDE (BIS)":"Mariage Marie-Claude & Jean-Michel",
-        "1968-07 - MARIAGE JEAN-MICHEL & MARIE-CLAUDE (TER)":"Mariage Marie-Claude & Jean-Michel",
+        "1968-07 - MARIAGE JEAN-MICHEL & MARIE-CLAUDE (BIS)":"Mariage Marie-Claude & Jean-Michel (BIS)",
+        "1968-07 - MARIAGE JEAN-MICHEL & MARIE-CLAUDE (TER)":"Mariage Marie-Claude & Jean-Michel (TER)",
         "1968-Q- - MARIAGE FRANCOISE & DANIEL":"Mariage Françoise & Daniel",
         "1968-T- VACANCES 1968":"Vacances 1968",
         "1968-U- VACANCES 1968 BIS":"Vacances 1968 (bis)",
@@ -165,7 +165,7 @@ fs.readFile(xmlFile, 'utf-8', function(err, docStr) {
         console.log("Process finished");
         //$pre.text(JSON.stringify(output, null, 4));
         //console.log(JSON.stringify(output, null, 4));
-        fs.writeFile(jsonFile, JSON.stringify(output, null, 4), function(err) {
+        fs.writeFile(jsonFile, JSON.stringify(output/*, null, 4*/), function(err) {
             if(err) {
                 console.log(err);
             } else {

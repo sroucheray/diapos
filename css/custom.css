@@ -30,6 +30,11 @@ vertical-align: text-top;
   height: 100%;
 }
 
+.modal{
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
 .navbar.affix{
   width: 14.2%;
 }
@@ -70,6 +75,12 @@ vertical-align: text-top;
   background-image: url(../img/glyphicons-halflings-white.png);
   opacity: 1;
 }
+.btn-toolbar{
+  display: inline-block;
+}
+.bar{
+  padding: 0 19px;
+}
 
 p.ellipsis {
   white-space: nowrap;
@@ -77,9 +88,29 @@ p.ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+  color: #C6C6C6;
+  text-shadow: 0 1px 0 #444444;
+  font-size: 85%;
+  margin:10px 0 0 0;
+  max-width: 160px;
+}
+.well h3{
+  margin-left : 11px;
 }
 
-.diapo{
+.list .thumbnail{
+  background-color: black;
+}
+
+.thumbnail > a {
+  display: block;
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.thumb-0 .diapo{
   padding:22px;
   border-radius: 10px;
   background:  url("/diapos/img/kodachrome-s.jpg") no-repeat scroll center 2px,
@@ -88,6 +119,17 @@ p.ellipsis {
   max-height: 70px;
   max-width: 70px;
   width:70px;
+}
+
+.thumb-1 .diapo{
+  padding:35px;
+  border-radius: 10px;
+  background:  url("/diapos/img/kodachrome-s.jpg") no-repeat scroll center 8px,
+               url("/diapos/img/logo-kodak.jpg") no-repeat scroll center 187px;
+  background-color: #F6F5F0;
+  max-height: 150px;
+  max-width: 150px;
+  width: 150px;
 }
 
 .diapo > div{
@@ -104,33 +146,90 @@ p.ellipsis {
 }
 .modal{
   width: 700px;
-  height: 700px;
+  height: 590px;
   margin: -350px 0 0 -350px;
 }
 .modal-body{
   text-align: center;
   max-height: 700px;
+  line-height: 515px;
 }
 .modal-body a, .modal-body img{
   display:inline-block;
   position: static;;
+  vertical-align: middle;
 }
 
-/* .modal-body{
-  max-height: none;
-} */
-/* .carousel .item > img{
-  display: inline;
+.modal-body .left{
+  position: absolute;
+  left: 10;
+  top: 300px;
+  cursor: pointer;
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
 }
 
-.carousel .item{
-  text-align: center;
-} */
+.modal-body .right{
+  position: absolute;
+  right: 10;
+  top: 300px;
+  cursor: pointer;
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
 
-/* .modal-body img{
-  margin: 0 80px;
+  /* Rules below not implemented in browsers yet */
+  -o-user-select: none;
+  user-select: none;
+}
+.show-in-google{
+  opacity: 0.5;
+}
+.show-in-google:hover{
+  opacity: 1;
+}
+.breadcrumb .active{
+  text-decoration: none;
+  cursor: text;
 }
 
-.modal{
-  width:auto;
-} */
+.close{
+    color: white;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
+    opacity: 0.8;
+    text-shadow: 0 1px 0 rgb(128, 128, 128);
+}
+.close:hover{
+    color: white;
+    opacity: 1;
+}
+.close small{
+  font-size: 55%;
+  text-transform:uppercase;
+  vertical-align: middle;
+}
+.bar > span{
+  padding-top: 6px;
+  vertical-align: middle;
+}
+
+.up{
+  margin: 0 30px;
+}
+.thumbnails > li {
+    margin-left: 20px;
+}
+
+@media (max-width: 767px) {
+  .navbar {
+    display: none;
+  }
+}

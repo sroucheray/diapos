@@ -1,9 +1,9 @@
-/*global define require*/
-define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router', 'bootscope'], function($, Backbone, Handlebars, _, Router, bs){
+/*global define*/
+define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router'], function($, Backbone, Handlebars, _, Router){
     var router = Router(),
-        templateUrl = 'text!' + bs.globals.getUrl('js/templates/carousel.phtml');
-
-    require([templateUrl]);
+        listeTpl = Handlebars.compile($('#album-liste').html()),
+        diaposTpl = Handlebars.compile($('#album-diapos').html()),
+        carouselTpl = Handlebars.compile($('#carousel').html());
 
     /*
     * Natural Sort algorithm for Javascript - Version 0.7 - Released under MIT license
@@ -15,7 +15,7 @@ define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router', '
             dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
             hre = /^0x[0-9a-f]+$/i,
             ore = /^0/,
-            i = function(s) { return naturalSort.insensitive && (''+s).toLowerCase() || ''+s },
+            i = function(s) { return naturalSort.insensitive && (''+s).toLowerCase() || ''+s; },
             // convert all to strings strip whitespace
             x = i(a).replace(sre, '') || '',
             y = i(b).replace(sre, '') || '',
@@ -23,13 +23,17 @@ define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router', '
             xN = x.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
             yN = y.replace(re, '\0$1\0').replace(/\0$/,'').replace(/^\0/,'').split('\0'),
             // numeric, hex or date detection
-            xD = parseInt(x.match(hre)) || (xN.length != 1 && x.match(dre) && Date.parse(x)),
-            yD = parseInt(y.match(hre)) || xD && y.match(dre) && Date.parse(y) || null,
+            xD = parseInt(x.match(hre), 10) || (xN.length !== 1 && x.match(dre) && Date.parse(x)),
+            yD = parseInt(y.match(hre), 10) || xD && y.match(dre) && Date.parse(y) || null,
             oFxNcL, oFyNcL;
         // first try and sort Hex codes or Dates
-        if (yD)
-            if ( xD < yD ) return -1;
-            else if ( xD > yD ) return 1;
+        if (yD){
+            if ( xD < yD ){
+                return -1;
+            } else if ( xD > yD ) {
+                return 1;
+            }
+        }
         // natural sorting through split numeric strings and default strings
         for(var cLoc=0, numS=Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
             // find floats not starting with '0', string or 0 if not defined (Clint Priest)
@@ -42,8 +46,8 @@ define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router', '
                 oFxNcL += '';
                 oFyNcL += '';
             }
-            if (oFxNcL < oFyNcL) return -1;
-            if (oFxNcL > oFyNcL) return 1;
+            if (oFxNcL < oFyNcL) {return -1;}
+            if (oFxNcL > oFyNcL) {return 1;}
         }
         return 0;
     }
@@ -53,8 +57,31 @@ define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router', '
             events: {
                 'click h3 a': 'backToCovers',
                 'click .diapo' : 'showCarousel',
+                'click .btn-toolbar a' : 'changeMode',
                 'click .modal-body a.left' : 'previous',
-                'click .modal-body a.right' : 'next'
+                'click .modal-body a.right' : 'next',
+                'hide #myModal' : 'hideModal'
+            },
+            initialize: function() {
+                var tpl = this.options.displayList ?  listeTpl : diaposTpl,
+                    album = this.getAlbum(),
+                    $diap;
+
+                album.entry = album.entry.sort(function(a, b){
+                    return  naturalSort(a.title, b.title);
+                });
+                this.$el.html(tpl(album));
+
+                $('.modal-backdrop').click();
+
+                if(this.options.displayCarousel){
+                    $diap = this.$el.find('.diapo[data-title="' + this.options.displayCarousel + '"]');
+
+                    if($diap.length > 0){
+                        this.options.index = $diap.parent().index();
+                        this.showDiapo();
+                    }
+                }
             },
             getAlbum : function(){
                 var that = this;
@@ -67,27 +94,31 @@ define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router', '
             getDiapoData : function(title){
                 return _.find(this.getAlbum().entry, function(entry){ return entry.title === title; });
             },
-            initialize: function() {
-                var tpl = Handlebars.compile(this.options.albumTemplate),
-                    album = this.getAlbum();
-
-                album.entry = album.entry.sort(function(a, b){
-                    return  naturalSort(a.title, b.title);
-                });
-                this.$el.html(tpl(album));
-               // $('#myModal').modal('hide');
-            },
             backToCovers : function(){
                 router.navigate("", {trigger: true});
 
                 return false;
             },
+            changeMode : function(e){
+                var $modeBut = $(e.currentTarget);
+
+                if(!$modeBut.is('.active')){
+                    router.navigate($modeBut.attr('href'), {trigger: true});
+                }
+
+                return false;
+            },
             showCarousel : function(e){
-                var $thisDiapo = $(e.currentTarget);
+                var $thisDiapo = $(e.currentTarget),
+                    title = $thisDiapo.data('title'),
+                    diapo = this.getDiapoData(title);
 
                 this.options.index = $thisDiapo.parent().index();
 
                 this.showDiapo();
+
+
+                router.navigate('album/' + this.getAlbum().id + '/lightbox/' + diapo.title, {trigger: false});
 
                 return false;
             },
@@ -96,7 +127,8 @@ define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router', '
                     $allLis = $('.thumbnails li'),
                     num = $allLis.length,
                     $thisDiapo,
-                    title;
+                    title,
+                    diapo;
 
                 if(this.options.index < 0){
                     this.options.index = num - 1;
@@ -108,19 +140,19 @@ define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router', '
 
                 $thisDiapo = $allLis.eq(this.options.index).find('.diapo');
                 title = $thisDiapo.data('title');
+                diapo = that.getDiapoData(title);
 
-                require([templateUrl], function(carouselTemplate){
-                    var tpl = Handlebars.compile(carouselTemplate),
-                        diapo = that.getDiapoData(title);
-                    $('<img />').attr('src', diapo.src).load(function(e){
-                        $('#myModal').find('.modal-body').html(tpl({
-                            diap : that.getDiapoData(title),
-                            width : e.target.naturalWidth,
-                            height : e.target.naturalHeight
-                        }));
-                        $('#myModal').find('h3').text(that.getAlbum().displayTitle + ' > ' + title);
-                        $('#myModal').modal('show');
-                    });
+                $('<img />').attr('src', diapo.src).load(function(e){
+                    var diapData = that.getDiapoData(title);
+                    $('#myModal').find('.modal-body').html(carouselTpl({
+                        diap : diapData,
+                        width : e.target.naturalWidth,
+                        height : e.target.naturalHeight
+                    }));
+                    $('#myModal').find('span').text(that.getAlbum().displayTitle + ' > ' + title);
+                    $('#myModal').modal('show');
+
+
                 });
             },
             previous : function(){
@@ -130,7 +162,9 @@ define(['jquery', 'backbone', 'handlebars', 'underscore','controllers/router', '
             next : function(){
                 this.options.index++;
                 this.showDiapo();
+            },
+            hideModal : function(){
+                //router.navigate('album/' + this.getAlbum().id, {trigger: true});
             }
-
         });
 });
